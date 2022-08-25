@@ -3,21 +3,12 @@ import json
 import pandas as pd
 from bs4 import BeautifulSoup
 import random
-from sqlalchemy import create_engine
+from .mysqlconnect import dataSave
 
 PATH_URL = 'cours/cours-des-devises-contre-Franc-CFA-appliquer-aux-transferts'
 URL = f'https://www.bceao.int/fr/{PATH_URL}'
 
 lien = 'https://restcountries.com/v2/all'
-
-# Credentials to database connection
-hostname="127.0.0.1:8889"
-dbname="dataCollection"
-uname="root"
-pwd="root"
-
-engine = create_engine("mysql+pymysql://{user}:{pw}@{host}/{db}"
-				.format(host=hostname, db=dbname, user=uname, pw=pwd))
 
 class dataCountries(object):
 
@@ -124,8 +115,7 @@ class CurrencyScrapper(object):
             for item in factory:
                 item.update(random.choice(listCountry))
             df = pd.DataFrame(factory)
-            # Convert dataframe to sql table                                   
-            df.to_sql('devises', engine, index=False)
+            dataSave.getData(df)
             return df
         return None
 
