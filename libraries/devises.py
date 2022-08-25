@@ -1,6 +1,5 @@
 import requests
 import json
-import matplotlib.pyplot as plt
 import pandas as pd
 from bs4 import BeautifulSoup
 import random
@@ -90,26 +89,33 @@ class CurrencyScrapper(object):
     @classmethod
     def addRandomDevise(cls, factory):
         a = ["Euro", "Dollar", "yen"]
-        for item in factory:
-            item.update( {"new_devise":random.choice(a)})
-        return factory
+        if factory:
+            for item in factory:
+                item.update( {"new_devise":random.choice(a)})
+            return factory
+        return None
 
     @classmethod
     def addXofConversion(cls, factory):
-        for item in factory:
-            if item["new_devise"] == "Euro":
-                item.update( {"XOF_conversion": item["Vente"] * 654.23 })
-            elif item["new_devise"] == "Dollar":
-                item.update( {"XOF_conversion": item["Vente"] * 656.50 })
-            else:
-                item.update( {"XOF_conversion": item["Vente"] * 4.80 })
-        return factory
+        if factory:
+            for item in factory:
+                if item["new_devise"] == "Euro":
+                    item.update( {"XOF_conversion": item["Vente"] * 654.23 })
+                elif item["new_devise"] == "Dollar":
+                    item.update( {"XOF_conversion": item["Vente"] * 656.50 })
+                else:
+                    item.update( {"XOF_conversion": item["Vente"] * 4.80 })
+            return factory
+        return None
 
     @classmethod
     def addColumnCountryAndFlag(cls, factory, listCountry):
-        for item in factory:
-            item.update(random.choice(listCountry))
-        return factory
+        if factory:
+            for item in factory:
+                item.update(random.choice(listCountry))
+            df = pd.DataFrame(factory)
+            return df
+        return None
 
     
     @classmethod
