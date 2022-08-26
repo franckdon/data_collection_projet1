@@ -3,7 +3,7 @@ import json
 import pandas as pd
 from bs4 import BeautifulSoup
 import random
-from .mysqlconnect import dataSave
+from .sql.database import dataSave
 
 PATH_URL = 'cours/cours-des-devises-contre-Franc-CFA-appliquer-aux-transferts'
 URL = f'https://www.bceao.int/fr/{PATH_URL}'
